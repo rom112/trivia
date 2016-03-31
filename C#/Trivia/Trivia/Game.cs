@@ -9,23 +9,18 @@ namespace UglyTrivia
     {
         List<Player> players = new List<Player>();
 
-        LinkedList<string> popQuestions = new LinkedList<string>();
-        LinkedList<string> scienceQuestions = new LinkedList<string>();
-        LinkedList<string> sportsQuestions = new LinkedList<string>();
-        LinkedList<string> rockQuestions = new LinkedList<string>();
+        private Dictionary<int, QuestionStack> questionAccordingPosition = new Dictionary<int, QuestionStack>();
 
         int currentPlayer = 0;
+
         bool isGettingOutOfPenaltyBox;
 
         public Game()
         {
-            for (int i = 0; i < 50; i++)
-            {
-                popQuestions.AddLast("Pop Question " + i);
-                scienceQuestions.AddLast(("Science Question " + i));
-                sportsQuestions.AddLast(("Sports Question " + i));
-                rockQuestions.AddLast(createRockQuestion(i));
-            }
+            questionAccordingPosition.Add(0,new QuestionStack("Pop"));
+            questionAccordingPosition.Add(1,new QuestionStack("Science"));
+            questionAccordingPosition.Add(2,new QuestionStack("Sports"));
+            questionAccordingPosition.Add(3,new QuestionStack("Rock"));
         }
 
         public String createRockQuestion(int index)
@@ -72,7 +67,6 @@ namespace UglyTrivia
                     Console.WriteLine(players[currentPlayer].Name + " is not getting out of the penalty box");
                     isGettingOutOfPenaltyBox = false;
                 }
-
             }
             else
             {
@@ -84,46 +78,27 @@ namespace UglyTrivia
                 Console.WriteLine("The category is " + currentCategory());
                 askQuestion();
             }
-
         }
 
         private void askQuestion()
         {
-            if (currentCategory() == "Pop")
-            {
-                Console.WriteLine(popQuestions.First());
-                popQuestions.RemoveFirst();
-            }
-            if (currentCategory() == "Science")
-            {
-                Console.WriteLine(scienceQuestions.First());
-                scienceQuestions.RemoveFirst();
-            }
-            if (currentCategory() == "Sports")
-            {
-                Console.WriteLine(sportsQuestions.First());
-                sportsQuestions.RemoveFirst();
-            }
-            if (currentCategory() == "Rock")
-            {
-                Console.WriteLine(rockQuestions.First());
-                rockQuestions.RemoveFirst();
-            }
+            questionAccordingPosition[players[currentPlayer].Place%4].AskNextQuestion();
         }
 
 
         private String currentCategory()
         {
-            if (players[currentPlayer].Place == 0) return "Pop";
-            if (players[currentPlayer].Place == 4) return "Pop";
-            if (players[currentPlayer].Place == 8) return "Pop";
-            if (players[currentPlayer].Place == 1) return "Science";
-            if (players[currentPlayer].Place == 5) return "Science";
-            if (players[currentPlayer].Place == 9) return "Science";
-            if (players[currentPlayer].Place == 2) return "Sports";
-            if (players[currentPlayer].Place == 6) return "Sports";
-            if (players[currentPlayer].Place == 10) return "Sports";
-            return "Rock";
+            switch (players[currentPlayer].Place % 4)
+            {
+                case 0:
+                    return "Pop";
+                case 1:
+                    return "Science";
+                case 2:
+                    return "Sports";
+                default:
+                    return "Rock";
+            }
         }
 
         public bool wasCorrectlyAnswered()
@@ -184,6 +159,27 @@ namespace UglyTrivia
         private bool didPlayerWin()
         {
             return !(players[currentPlayer].Purse == 6);
+        }
+    }
+
+    internal class QuestionStack
+    {
+        private LinkedList<string> questions = new LinkedList<string>();
+
+        public QuestionStack(string CategoryName)
+        {
+            for (int i = 0; i < 50; i++)
+            {
+                questions.AddLast(CategoryName + " Question " + i);
+            }
+        }
+
+        public string CategoryName { get; private set; }
+
+        public void AskNextQuestion()
+        {
+            Console.WriteLine(questions.First());
+            questions.RemoveFirst();
         }
     }
 }
