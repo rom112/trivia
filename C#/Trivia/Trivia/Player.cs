@@ -9,11 +9,13 @@ namespace UglyTrivia
             this.Name = playerName;
             this.Purse = 0;
             this.Place = 0;
+            InPenaltyBox = false;
         }
 
         public string Name { get; private set; }
         public int Purse { get; private set; }
         public int Place { get; private set; }
+        public bool InPenaltyBox { get; private set; }
 
         public void MovePlace(int roll)
         {
@@ -24,6 +26,11 @@ namespace UglyTrivia
         public void AddOnePurse()
         {
             Purse++;
+        }
+
+        public void GoToPrison()
+        {
+            InPenaltyBox = true;
         }
 
         public class Players
