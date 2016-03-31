@@ -15,11 +15,17 @@ namespace UglyTrivia
         public int Purse { get; private set; }
         public int Place { get; private set; }
 
+        public void MovePlace(int roll)
+        {
+            Place += roll;
+            if (Place > 11) Place = Place - 12;
+        }
+
         public class Players
         {
             List<Player> players = new List<Player>();
 
-            public List<Player> add(Player player)
+            public List<Player> AddPlayer(Player player)
             {
                 players.Add(player);
                 return players;
@@ -28,11 +34,6 @@ namespace UglyTrivia
             public Player Player(int numPlayer)
             {
                 return players[numPlayer];
-            }
-
-            public int Count()
-            {
-                return players.Count;
             }
         }
     }
