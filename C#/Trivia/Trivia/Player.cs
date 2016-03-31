@@ -4,16 +4,16 @@ namespace UglyTrivia
 {
     internal class Player
     {
-        public Player(string playerName, string purse, string place)
+        public Player(string playerName)
         {
-            Name = playerName;
-            this.Purse = purse;
-            Place = place;
+            this.Name = playerName;
+            this.Purse = 0;
+            this.Place = 0;
         }
 
         public string Name { get; private set; }
-        public string Purse { get; private set; }
-        public string Place { get; private set; }
+        public int Purse { get; private set; }
+        public int Place { get; private set; }
 
         public class Players
         {
