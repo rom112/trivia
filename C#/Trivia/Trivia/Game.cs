@@ -9,8 +9,6 @@ namespace UglyTrivia
     {
         List<Player> players = new List<Player>();
 
-        int[] purses = new int[6];
-
         bool[] inPenaltyBox = new bool[6];
 
         LinkedList<string> popQuestions = new LinkedList<string>();
@@ -45,7 +43,6 @@ namespace UglyTrivia
         public bool add(String playerName)
         {
             players.Add(new Player(playerName));
-            purses[players.Count] = 0;
             inPenaltyBox[players.Count] = false;
 
             Console.WriteLine(playerName + " was added");
@@ -139,10 +136,10 @@ namespace UglyTrivia
                 if (isGettingOutOfPenaltyBox)
                 {
                     Console.WriteLine("Answer was correct!!!!");
-                    purses[currentPlayer]++;
+                    players[currentPlayer].AddOnePurse();
                     Console.WriteLine(players[currentPlayer].Name
                             + " now has "
-                            + purses[currentPlayer]
+                            + players[currentPlayer].Purse
                             + " Gold Coins.");
 
                     bool winner = didPlayerWin();
@@ -157,18 +154,14 @@ namespace UglyTrivia
                     if (currentPlayer == players.Count) currentPlayer = 0;
                     return true;
                 }
-
-
-
             }
             else
             {
-
                 Console.WriteLine("Answer was corrent!!!!");
-                purses[currentPlayer]++;
+                players[currentPlayer].AddOnePurse();
                 Console.WriteLine(players[currentPlayer].Name
                         + " now has "
-                        + purses[currentPlayer]
+                        + players[currentPlayer].Purse
                         + " Gold Coins.");
 
                 bool winner = didPlayerWin();
@@ -193,7 +186,7 @@ namespace UglyTrivia
 
         private bool didPlayerWin()
         {
-            return !(purses[currentPlayer] == 6);
+            return !(players[currentPlayer].Purse == 6);
         }
     }
 }

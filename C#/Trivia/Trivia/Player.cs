@@ -21,6 +21,11 @@ namespace UglyTrivia
             if (Place > 11) Place = Place - 12;
         }
 
+        public void AddOnePurse()
+        {
+            Purse++;
+        }
+
         public class Players
         {
             List<Player> players = new List<Player>();
